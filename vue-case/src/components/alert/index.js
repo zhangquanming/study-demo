@@ -1,4 +1,4 @@
-import Alert from './Alert'
+import Alert from './src/Alert'
 
 export default {
   install (Vue) {
