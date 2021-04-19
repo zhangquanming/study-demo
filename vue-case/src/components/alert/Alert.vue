@@ -1,19 +1,21 @@
 <template>
-  <div class="alert-box-wrapper">
-    <div class="alert-box">
-      <div class="alert-box-header">
-        <div class="alert-box-title">提示</div>
-        <div class="alert-box-headerbtn">X</div>
-      </div>
-      <div class="alert-box-content">
-        <div class="alert-box-container">这是一段提示内容</div>
-      </div>
-      <div class="alert-box-btns">
-        <button class="close-btn">取消</button>
-        <button class="submit-btn">确定</button>
+  <transition name="fade">
+    <div class="alert-box-wrapper" v-show="show">
+      <div class="alert-box">
+        <div class="alert-box-header">
+          <div class="alert-box-title">{{ title }}</div>
+          <div class="alert-box-headerbtn" @click="handleAction('close')">X</div>
+        </div>
+        <div class="alert-box-content">
+          <div class="alert-box-container">{{ message }}</div>
+        </div>
+        <div class="alert-box-btns">
+          <button class="cancel-btn"  @click="handleAction('cancel')">{{ cancelText }}</button>
+          <button class="confirm-btn"  @click="handleAction('confirm')">{{ confirmText }}</button>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -21,23 +23,38 @@ export default {
   name: 'Alert',
   data () {
     return {
-      title: '',
-      text: '',
-      promise: null,
+      title: '标题',
+      message: '这是一段提示内容',
       show: false,
-      cancelText: '',
-      confirmText: ''
+      callback: null,
+      cancelText: '取消',
+      confirmText: '确定'
     }
   },
-  computed: {},
-  watch: {},
-  created () { },
-  mounted () { },
-  methods: {}
+  methods: {
+    handleAction (action) {
+      this.callback(action)
+      this.destroyVm()
+    },
+    destroyVm () { // 销毁
+      this.show = false
+      setTimeout(() => {
+        this.$destroy(true)
+        this.$el && this.$el.parentNode.removeChild(this.$el)
+      }, 500)
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0;
+}
+
 .alert-box-wrapper {
   position: fixed;
   top: 0;
@@ -81,7 +98,7 @@ export default {
     .alert-box-btns {
       padding: 5px 15px 0;
       text-align: right;
-      .close-btn {
+      .cancel-btn {
         padding: 5px 15px;
         background: #fff;
         border: 1px solid #dcdfe6;
@@ -89,7 +106,7 @@ export default {
         outline: none;
         cursor: pointer;
       }
-      .submit-btn {
+      .confirm-btn {
         margin-left: 6px;
         padding: 5px 15px;
         color: #fff;

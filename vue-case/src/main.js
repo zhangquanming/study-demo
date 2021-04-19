@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import Alert from '@/components/alert'
+
+Vue.use(Alert)
+
 Vue.config.productionTip = false
 
 new Vue({
