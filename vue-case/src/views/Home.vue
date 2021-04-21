@@ -1,6 +1,10 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" @click="handleClick"><br/>
+    <img
+      alt="Vue logo"
+      src="../assets/logo.png"
+      @click="handleClick"
+    ><br />
     <button @click="handleClick">显示alert</button>
   </div>
 </template>
